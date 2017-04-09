@@ -1,7 +1,16 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const client = require('./redis');
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
+const PORT = process.env.PORT || 8080;
+const app = express();
+
+// Routes
+const webhookValidation = require('./webhookValidation');
+const createUser = require('./createUser');
+
+// Middleware
+app.use('/webhookValidation', webhookValidation);
+app.use('/createUser', createUser);
+
+// Start
+app.listen(PORT);
