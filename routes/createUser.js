@@ -1,17 +1,17 @@
 const express = require('express');
-const R = require('ramda');
 const simpleLogger = require('../helpers/simpleLogger');
 const redis = require('../helpers/redis');
 
 const router = express.Router();
 router.use(simpleLogger('createUser'));
 
-//change this to POST
+// change this to POST
 router.get('/id/:id/name/:name/pic/:picUrl', (req, res) => {
   const { id, name, picUrl } = req.params;
   let returnCode = 200;
 
-  if(R.or(id == '', name == '')) {
+  // Validation - gotta have an id
+  if(id == '') {
     console.log('Bad Request');
     res.sendStatus(400);
     res.end();
