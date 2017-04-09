@@ -6,17 +6,34 @@ const redis = require('../helpers/redis');
 const router = express.Router();
 router.use(simpleLogger('createUser'));
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
+//change this to POST
+router.get('/id/:id/name/:name/pic/:picUrl', (req, res) => {
+  const { id, name, picUrl } = req.params;
+  let returnCode = 200;
+
+  if(R.or(id == '', name == '')) {
+    console.log('Bad Request');
+    res.sendStatus(400);
+    res.end();
+    return;
+  }
+
   redis.saddAsync('users', id).then(status => {
     if (status == 1) {
       console.log(`Adding user ${id} to redis`);
-      res.sendStatus(201); // "Created"
+      redis.hmsetAsync([`user:${id}`,
+        'id', id,
+        'name', name,
+        'picUrl', picUrl
+      ]).then(createStatus => {
+        returnCode = createStatus == 1 ? 201 : 204;
+        console.log('added user info');
+      });
     } else {
       console.error(`User ${id} already in redis`);
-      res.sendStatus(204); // "No Content"
+      returnCode = 204;
     }
-
+    res.sendStatus(returnCode);
   });
 });
 
