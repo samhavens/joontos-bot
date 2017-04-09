@@ -1,7 +1,7 @@
 const express = require('express');
 const R = require('ramda');
-const simpleLogger = require('./simpleLogger');
-const redis = require('./redis');
+const simpleLogger = require('../helpers/simpleLogger');
+const redis = require('../helpers/redis');
 
 const router = express.Router();
 router.use(simpleLogger('createUser'));

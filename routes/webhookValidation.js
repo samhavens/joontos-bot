@@ -1,7 +1,7 @@
 const express = require('express');
 const R = require('ramda');
-const simpleLogger = require('./simpleLogger');
-const redis = require('./redis');
+const simpleLogger = require('../helpers/simpleLogger');
+const redis = require('../helpers/redis');
 
 const VERIFY_TOKEN = process.env.FB_VALIDATION || 'suck_1000_dicks_curl_up_and_die';
 const router = express.Router();
