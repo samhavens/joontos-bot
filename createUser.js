@@ -11,10 +11,12 @@ router.get('/:id', (req, res) => {
   redis.saddAsync('users', id).then(status => {
     if (status == 1) {
       console.log(`Adding user ${id} to redis`);
+      res.sendStatus(201); // "Created"
     } else {
       console.error(`User ${id} already in redis`);
+      res.sendStatus(204); // "No Content"
     }
-    res.sendStatus(200);
+
   });
 });
 
